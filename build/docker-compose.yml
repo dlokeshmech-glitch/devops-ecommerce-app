@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  ecommerce-app:
+    image: ecommerce-app
+    container_name: ecommerce-container
+
+    ports:
+      - "80:80"

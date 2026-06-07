@@ -1,0 +1,334 @@
+Started by GitHub push by dlokeshmech-glitch
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/lib/jenkins/workspace/ecommerce-cicd
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Clone Repository)
+[Pipeline] git
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/ecommerce-cicd/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/dlokeshmech-glitch/devops-ecommerce-app.git # timeout=10
+Fetching upstream changes from https://github.com/dlokeshmech-glitch/devops-ecommerce-app.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.43.0'
+ > git fetch --tags --force --progress -- https://github.com/dlokeshmech-glitch/devops-ecommerce-app.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision 274b82bb29413a2fd99a96e5c39d5e8564c223c1 (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 274b82bb29413a2fd99a96e5c39d5e8564c223c1 # timeout=10
+ > git branch -a -v --no-abbrev # timeout=10
+ > git branch -D main # timeout=10
+ > git checkout -b main 274b82bb29413a2fd99a96e5c39d5e8564c223c1 # timeout=10
+Commit message: "Merge pull request #1 from dlokeshmech-glitch/dev"
+ > git rev-list --no-walk fc587145984781290cf4f10940a6cd85d84615ac # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build Docker Image)
+[Pipeline] sh
++ cd build
++ docker build -t ecommerce-app .
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 29B 0.1s
+#1 transferring dockerfile: 132B 0.2s done
+#1 DONE 0.3s
+
+#2 [internal] load metadata for docker.io/library/nginx:alpine
+#2 ...
+
+#3 [auth] library/nginx:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/nginx:alpine
+#2 DONE 3.7s
+
+#4 [internal] load .dockerignore
+#4 transferring context:
+#4 transferring context: 75B 0.6s done
+#4 DONE 0.8s
+
+#5 [internal] load build context
+#5 DONE 0.4s
+
+#6 [1/2] FROM docker.io/library/nginx:alpine@sha256:8b1e78743a03dbb2c95171cc58639fef29abc8816598e27fb910ed2e621e589a
+#6 ...
+
+#5 [internal] load build context
+#5 ...
+
+#6 [1/2] FROM docker.io/library/nginx:alpine@sha256:8b1e78743a03dbb2c95171cc58639fef29abc8816598e27fb910ed2e621e589a
+#6 resolve docker.io/library/nginx:alpine@sha256:8b1e78743a03dbb2c95171cc58639fef29abc8816598e27fb910ed2e621e589a
+#6 ...
+
+#5 [internal] load build context
+#5 transferring context: 129B 9.7s
+#5 transferring context: 527B 15.6s
+#5 transferring context: 767B 22.4s
+#5 transferring context: 820B 27.8s done
+#5 DONE 29.7s
+
+#6 [1/2] FROM docker.io/library/nginx:alpine@sha256:8b1e78743a03dbb2c95171cc58639fef29abc8816598e27fb910ed2e621e589a
+#6 resolve docker.io/library/nginx:alpine@sha256:8b1e78743a03dbb2c95171cc58639fef29abc8816598e27fb910ed2e621e589a 35.6s done
+#6 DONE 42.0s
+
+#7 [2/2] COPY . /usr/share/nginx/html
+#7 CACHED
+
+#8 exporting to image
+#8 exporting layers
+#8 exporting layers 2.2s done
+#8 exporting manifest sha256:439a6f7d6947b2e4b18bc2ce5b3e2738be67701144ff4196650ba559dda95b31
+#8 exporting manifest sha256:439a6f7d6947b2e4b18bc2ce5b3e2738be67701144ff4196650ba559dda95b31 1.1s done
+#8 exporting config sha256:1fff390e516710265ab20fb4316a274b6022643a5e33754f6f6ec54cf9fe0f49
+#8 exporting config sha256:1fff390e516710265ab20fb4316a274b6022643a5e33754f6f6ec54cf9fe0f49 1.7s done
+#8 exporting attestation manifest sha256:f7c78a3c8b7218e2f592d47921862dee0c5dc398961c694feb65fca155090665
+#8 exporting attestation manifest sha256:f7c78a3c8b7218e2f592d47921862dee0c5dc398961c694feb65fca155090665 0.6s done
+#8 exporting manifest list sha256:395fe1bea5aa7e6d6f1e02a5dfe15933f6fe7c36f197c10046387067c3b8bd30
+#8 exporting manifest list sha256:395fe1bea5aa7e6d6f1e02a5dfe15933f6fe7c36f197c10046387067c3b8bd30 2.3s done
+#8 naming to docker.io/library/ecommerce-app:latest
+#8 naming to docker.io/library/ecommerce-app:latest 0.5s done
+#8 unpacking to docker.io/library/ecommerce-app:latest
+#8 unpacking to docker.io/library/ecommerce-app:latest 2.3s done
+#8 DONE 17.6s
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Push Dev Image)
+[Pipeline] withCredentials
+Masking supported pattern matches of $DOCKER_PASS
+[Pipeline] {
+[Pipeline] sh
++ echo ****
++ docker login -u lokeshdev7 --password-stdin
+Login Succeeded
++ docker tag ecommerce-app lokeshdev7/ecommerce-dev:latest
++ docker push lokeshdev7/ecommerce-dev:latest
+The push refers to repository [docker.io/lokeshdev7/ecommerce-dev]
+de1b677d8c00: Waiting
+94d083cf706a: Waiting
+abaae85d1626: Waiting
+e654dbbbb9e1: Waiting
+fbaed3f7fcbe: Waiting
+52afe2feaabd: Waiting
+5763400f8f8f: Waiting
+6a0ac1617861: Waiting
+43f834d60d8a: Waiting
+a5008f4a4b25: Waiting
+a5008f4a4b25: Waiting
+de1b677d8c00: Waiting
+94d083cf706a: Waiting
+abaae85d1626: Waiting
+e654dbbbb9e1: Waiting
+fbaed3f7fcbe: Waiting
+52afe2feaabd: Waiting
+5763400f8f8f: Waiting
+6a0ac1617861: Waiting
+43f834d60d8a: Waiting
+de1b677d8c00: Waiting
+94d083cf706a: Waiting
+abaae85d1626: Waiting
+e654dbbbb9e1: Waiting
+fbaed3f7fcbe: Waiting
+52afe2feaabd: Waiting
+5763400f8f8f: Waiting
+6a0ac1617861: Waiting
+43f834d60d8a: Waiting
+a5008f4a4b25: Waiting
+e654dbbbb9e1: Waiting
+fbaed3f7fcbe: Waiting
+52afe2feaabd: Waiting
+5763400f8f8f: Waiting
+6a0ac1617861: Waiting
+43f834d60d8a: Waiting
+a5008f4a4b25: Waiting
+de1b677d8c00: Waiting
+94d083cf706a: Waiting
+abaae85d1626: Waiting
+52afe2feaabd: Waiting
+5763400f8f8f: Waiting
+6a0ac1617861: Waiting
+43f834d60d8a: Waiting
+a5008f4a4b25: Waiting
+de1b677d8c00: Waiting
+94d083cf706a: Waiting
+abaae85d1626: Waiting
+e654dbbbb9e1: Waiting
+fbaed3f7fcbe: Waiting
+94d083cf706a: Waiting
+abaae85d1626: Waiting
+e654dbbbb9e1: Waiting
+fbaed3f7fcbe: Waiting
+52afe2feaabd: Waiting
+5763400f8f8f: Waiting
+6a0ac1617861: Waiting
+43f834d60d8a: Waiting
+a5008f4a4b25: Waiting
+de1b677d8c00: Waiting
+fbaed3f7fcbe: Waiting
+52afe2feaabd: Waiting
+5763400f8f8f: Waiting
+6a0ac1617861: Waiting
+43f834d60d8a: Waiting
+a5008f4a4b25: Waiting
+de1b677d8c00: Waiting
+94d083cf706a: Waiting
+abaae85d1626: Waiting
+e654dbbbb9e1: Waiting
+abaae85d1626: Waiting
+e654dbbbb9e1: Waiting
+fbaed3f7fcbe: Waiting
+52afe2feaabd: Waiting
+5763400f8f8f: Waiting
+6a0ac1617861: Waiting
+43f834d60d8a: Waiting
+a5008f4a4b25: Waiting
+de1b677d8c00: Waiting
+94d083cf706a: Waiting
+52afe2feaabd: Waiting
+5763400f8f8f: Waiting
+6a0ac1617861: Waiting
+43f834d60d8a: Waiting
+a5008f4a4b25: Waiting
+de1b677d8c00: Waiting
+94d083cf706a: Waiting
+abaae85d1626: Waiting
+e654dbbbb9e1: Waiting
+fbaed3f7fcbe: Waiting
+de1b677d8c00: Waiting
+94d083cf706a: Waiting
+abaae85d1626: Waiting
+e654dbbbb9e1: Waiting
+fbaed3f7fcbe: Waiting
+52afe2feaabd: Waiting
+5763400f8f8f: Waiting
+6a0ac1617861: Waiting
+43f834d60d8a: Waiting
+a5008f4a4b25: Waiting
+de1b677d8c00: Waiting
+94d083cf706a: Waiting
+abaae85d1626: Waiting
+e654dbbbb9e1: Waiting
+fbaed3f7fcbe: Waiting
+52afe2feaabd: Waiting
+5763400f8f8f: Waiting
+6a0ac1617861: Waiting
+43f834d60d8a: Waiting
+a5008f4a4b25: Waiting
+52afe2feaabd: Waiting
+5763400f8f8f: Waiting
+6a0ac1617861: Waiting
+43f834d60d8a: Waiting
+a5008f4a4b25: Waiting
+de1b677d8c00: Waiting
+94d083cf706a: Waiting
+abaae85d1626: Waiting
+e654dbbbb9e1: Waiting
+fbaed3f7fcbe: Waiting
+52afe2feaabd: Waiting
+5763400f8f8f: Waiting
+6a0ac1617861: Waiting
+43f834d60d8a: Waiting
+a5008f4a4b25: Waiting
+de1b677d8c00: Waiting
+94d083cf706a: Waiting
+abaae85d1626: Waiting
+e654dbbbb9e1: Waiting
+fbaed3f7fcbe: Waiting
+de1b677d8c00: Waiting
+94d083cf706a: Waiting
+abaae85d1626: Waiting
+e654dbbbb9e1: Layer already exists
+fbaed3f7fcbe: Waiting
+52afe2feaabd: Waiting
+5763400f8f8f: Waiting
+6a0ac1617861: Waiting
+43f834d60d8a: Waiting
+a5008f4a4b25: Waiting
+de1b677d8c00: Waiting
+94d083cf706a: Waiting
+abaae85d1626: Waiting
+fbaed3f7fcbe: Waiting
+52afe2feaabd: Waiting
+5763400f8f8f: Waiting
+6a0ac1617861: Waiting
+43f834d60d8a: Waiting
+a5008f4a4b25: Waiting
+6a0ac1617861: Waiting
+43f834d60d8a: Layer already exists
+a5008f4a4b25: Waiting
+de1b677d8c00: Waiting
+94d083cf706a: Waiting
+abaae85d1626: Layer already exists
+fbaed3f7fcbe: Waiting
+52afe2feaabd: Waiting
+5763400f8f8f: Waiting
+fbaed3f7fcbe: Waiting
+52afe2feaabd: Waiting
+5763400f8f8f: Waiting
+6a0ac1617861: Waiting
+a5008f4a4b25: Waiting
+de1b677d8c00: Waiting
+94d083cf706a: Waiting
+52afe2feaabd: Waiting
+5763400f8f8f: Layer already exists
+6a0ac1617861: Layer already exists
+a5008f4a4b25: Layer already exists
+de1b677d8c00: Layer already exists
+94d083cf706a: Layer already exists
+fbaed3f7fcbe: Layer already exists
+52afe2feaabd: Waiting
+52afe2feaabd: Waiting
+52afe2feaabd: Pushed
+latest: digest: sha256:395fe1bea5aa7e6d6f1e02a5dfe15933f6fe7c36f197c10046387067c3b8bd30 size: 856
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Push Prod Image)
+[Pipeline] withCredentials
+Masking supported pattern matches of $DOCKER_PASS
+[Pipeline] {
+[Pipeline] sh
++ docker tag ecommerce-app lokeshdev7/ecommerce-prod:latest
++ docker push lokeshdev7/ecommerce-prod:latest
+The push refers to repository [docker.io/lokeshdev7/ecommerce-prod]
+52afe2feaabd: Waiting
+52afe2feaabd: Waiting
+52afe2feaabd: Waiting
+de1b677d8c00: Waiting
+e654dbbbb9e1: Layer already exists
+a5008f4a4b25: Waiting
+5763400f8f8f: Layer already exists
+6a0ac1617861: Layer already exists
+43f834d60d8a: Layer already exists
+94d083cf706a: Layer already exists
+fbaed3f7fcbe: Layer already exists
+52afe2feaabd: Mounted from lokeshdev7/ecommerce-dev
+abaae85d1626: Layer already exists
+de1b677d8c00: Layer already exists
+a5008f4a4b25: Layer already exists
+latest: digest: sha256:395fe1bea5aa7e6d6f1e02a5dfe15933f6fe7c36f197c10046387067c3b8bd30 size: 856
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] echo
+Pipeline completed successfully
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
